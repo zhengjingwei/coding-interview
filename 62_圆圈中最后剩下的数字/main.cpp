@@ -8,7 +8,7 @@ public:
     // STL中的list只有没有循坏，每次访问到链表末尾时要重新指向链表头
     int LastRemaining_Solution(int n, int m){
         if (n<1 || m<1)
-            return 0;
+            return -1;
 
         list<int> nums;
         for (int i = 0; i < n; ++i) {
