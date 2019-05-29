@@ -13,8 +13,8 @@ public:
         vector<int> ret;
         int begin = 0, end = nums.size()-1;
         int idx = Partition(nums,begin,end);
-        while (idx != k){
-            if (idx < k){
+        while (idx != k-1){
+            if (idx < k-1){
                 begin = idx + 1;
                 idx = Partition(nums,begin,end);
             }else{
@@ -75,7 +75,7 @@ public:
 };
 
 int main(){
-    vector<int> nums = {3,2,4,5,7,4};
+    vector<int> nums = {3,2,4,5,7,6};
     SolutionI sol1;
     vector<int> ret1 = sol1.getTopK(nums,4);
     SolutionII sol2;
