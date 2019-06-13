@@ -132,19 +132,22 @@ void inOrderII(TreeNode *root){
             s.push(root);
             root = root->left;
         }
-        if (!s.empty()){
-            root = s.top();
-            s.pop();
-            cout << root->val <<" ";
-            root = root->right;
-        }
-    }
+        root = s.top();
+        s.pop();
+        cout << root->val <<" ";
+        root = root->right;
+    } 
 }
 
-// 后序遍历（非递归）
+/*
+ * 非递归后序遍历（方法1）
+ * 用一个栈存储未访问的右子节点
+ * 用一个变量last存储上一个访问的节点，用来判断右子节点是否访问过
+ */
 void posOrderII(TreeNode *root){
     if(root == nullptr) return;
     stack<TreeNode*> s;
+    TreeNode *last = nullptr;   // 存储上一次访问的节点
     // 栈为空时结束遍历
     while (root!= nullptr || !s.empty()){
         while (root != nullptr){
@@ -152,17 +155,39 @@ void posOrderII(TreeNode *root){
             root = root->left;
         }
         root = s.top();
-        s.pop();
-        cout << root->val <<" ";
-        // 当前节点是否为栈顶的左孩子，如果是的话那么还需要先访问右子树才能访问根节点
-        if(!s.empty() && root == (s.top())->left){
-            root = (s.top())->right;
-        } else
+        if(root->right == nullptr || root->right == last){  // 右子树已经访问过
+            cout << root->val <<" ";
+            s.pop();
+            last = root;
             root = nullptr;
+        }
+        else
+            root = root->right; // 右子树未访问，需要先访问有子树
     }
 }
 
-
+/*
+ * 非递归后序遍历（方法2）
+ * 将简洁的非递归先序遍历修改为 根->右->左 顺序遍历，然后将最后得到的递归序列翻转
+ * 得到后序遍历 左->右->根
+ */
+void posOrderIII(TreeNode *root){
+    vector<int> ret;
+    if(!root) return ret;
+    stack<TreeNode *> s;
+    s.push(root);
+    while ( !s.empty()){
+        root = s.top();
+        s.pop();
+        ret.push_back(root->val);
+        if (root->left)
+            s.push(root->left);
+        if (root->right)
+            s.push(root->right);
+    }
+    for(int i = ret.size()-1; i>=0; --i)
+        cout << ret[i] << endl;
+}
 
 int main(){
     /*
